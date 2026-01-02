@@ -8,3 +8,9 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Next.js App Router configuration
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/next"
+  status = 200
+
