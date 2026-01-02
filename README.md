@@ -24,8 +24,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
 ```
 
 3. Supabase Setup:
-✅ The `intent_events` table is already set up in your TEST database.
-The table structure includes: `id` (uuid), `event_type`, `page`, `created_at`, `referrer`, and `user_agent` columns.
+✅ The `intent_feedback` table is already set up in your TEST database with UTM tracking columns.
+The table structure includes: `id`, `pain_point`, `would_use`, `current_tool`, `email`, `created_at`, `referrer`, `user_agent`, and UTM parameters (`utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`).
 
 4. Run the development server:
 ```bash
@@ -37,35 +37,58 @@ npm run dev
 ## Features
 
 - **Minimal hero section** - Clear problem statement and research intent
-- **Single intent button** - "Ik zou dit gebruiken" tracks interest clicks
-- **Simple explanation** - One-line description of the idea
-- **Trust section** - Transparent about being a test page
-- **Intent tracking** - All clicks stored in Supabase `intent_events` table
+- **Single intent button** - Opens modal with step-based form
+- **Intent tracking** - All responses stored in Supabase `intent_feedback` table
+- **UTM tracking** - Automatically captures UTM parameters from URL
 - **Mobile-first design** - Clean, minimal, lots of white space
 
-## Intent Tracking
+## UTM Tracking
 
-The page tracks user interest through a single button click:
-- **Event type**: `interest_click`
-- **Page**: `bonnenhulp_landing`
-- **Data captured**: timestamp, referrer, user_agent
+The page automatically tracks UTM parameters from the URL. Use these parameters in your links:
 
-After clicking, users see: "Dank je! We bouwen dit alleen als genoeg mensen dit willen."
+**Example links:**
+```
+https://bonnenhulp.nl/?utm_source=facebook&utm_medium=social&utm_campaign=test
+https://bonnenhulp.nl/?utm_source=linkedin&utm_medium=post&utm_campaign=zzp_community
+https://bonnenhulp.nl/?utm_source=email&utm_medium=newsletter&utm_campaign=launch
+```
 
-## Viewing Intent Data
+**UTM Parameters tracked:**
+- `utm_source` - Where the traffic comes from (facebook, linkedin, email, etc.)
+- `utm_medium` - Marketing medium (social, email, cpc, etc.)
+- `utm_campaign` - Campaign name
+- `utm_term` - Keyword (optional)
+- `utm_content` - Content identifier (optional)
 
-Query the `intent_events` table in Supabase to see:
-- Total interest clicks
-- Click timestamps
-- Referrer sources
-- User agents
+All UTM parameters are automatically saved to Supabase when users submit the form.
+
+## Viewing Traffic Data
+
+Query the `intent_feedback` table in Supabase to see:
+- Total submissions by source
+- Campaign performance
+- Traffic sources
+- Conversion rates by UTM parameters
+
+**Example SQL queries:**
+```sql
+-- Count submissions by source
+SELECT utm_source, COUNT(*) as count 
+FROM intent_feedback 
+GROUP BY utm_source;
+
+-- Campaign performance
+SELECT utm_campaign, utm_source, COUNT(*) as submissions
+FROM intent_feedback 
+WHERE utm_campaign IS NOT NULL
+GROUP BY utm_campaign, utm_source;
+```
 
 ## Design Philosophy
 
 This page is designed for **signal testing**, not product building:
 - No WhatsApp integration
-- No email collection
-- No manual handling
+- No email collection (optional only)
 - One clear button
 - Honest messaging about being a test
 

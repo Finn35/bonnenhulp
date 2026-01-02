@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { getTrackingParams } from "@/lib/utm";
 
 const PAIN_POINTS = [
   "Ik vergeet ze vaak",
@@ -103,6 +104,9 @@ export default function IntentModal({ isOpen, onClose }: IntentModalProps) {
     setIsSubmitting(true);
     setError("");
 
+    // Get UTM parameters from URL
+    const utmParams = getTrackingParams();
+
     try {
       const response = await fetch("/api/feedback", {
         method: "POST",
@@ -114,6 +118,7 @@ export default function IntentModal({ isOpen, onClose }: IntentModalProps) {
           current_tool:
             currentTool === "Anders" ? currentToolOther : currentTool || null,
           email: email.trim() || null,
+          ...utmParams,
         }),
       });
 

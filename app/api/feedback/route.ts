@@ -10,6 +10,11 @@ export async function POST(request: Request) {
       would_use,
       current_tool,
       email,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_term,
+      utm_content,
     } = body;
 
     if (!pain_point) {
@@ -34,6 +39,11 @@ export async function POST(request: Request) {
           email: email || null,
           referrer,
           user_agent: userAgent,
+          utm_source: utm_source || null,
+          utm_medium: utm_medium || null,
+          utm_campaign: utm_campaign || null,
+          utm_term: utm_term || null,
+          utm_content: utm_content || null,
         },
       ])
       .select();
