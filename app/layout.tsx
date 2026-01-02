@@ -8,7 +8,9 @@ export const metadata: Metadata = {
   title: "Bonnenhulp - Stuur een foto, krijg een overzicht",
   description: "Stuur een foto van je bon via WhatsApp en ontvang een overzichtelijk resultaat. Geen formulieren, geen account nodig.",
   icons: {
-    icon: "/icon.svg",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
   },
 };
 
