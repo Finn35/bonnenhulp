@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="nl">
-      <head>
+      <body className={inter.className}>
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-B1JTLLC4B8"
@@ -36,8 +36,8 @@ export default function RootLayout({
             gtag('config', 'G-B1JTLLC4B8');
           `}
         </Script>
-      </head>
-      <body className={inter.className}>{children}</body>
+        {children}
+      </body>
     </html>
   );
 }
